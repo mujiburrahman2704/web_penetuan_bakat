@@ -1,0 +1,1 @@
+<img src="{{ asset('img/login.png') }}" style="width: 35rem" alt="Webbench">
