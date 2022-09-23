@@ -7,6 +7,8 @@ use App\Models\Prodi;
 use App\Models\User;
 use App\Models\mahasiswa;
 use App\Models\Hasilpengujian;
+use App\Models\ketuajurusan;
+use App\Models\Ketuaprodi;
 use App\Models\Pengujian;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
@@ -41,6 +43,19 @@ class Admin extends Controller
         return view('admin.add', compact('jurusan', 'prodi'));
     }
 
+    public function createketua()
+    {
+        $jurusan = Jurusan::all();
+        $prodi = Prodi::all();
+        return view('admin.addketua', compact('jurusan', 'prodi'));
+    }
+    public function createketuap()
+    {
+        $jurusan = Jurusan::all();
+        $prodi = Prodi::all();
+        return view('admin.addketuap', compact('jurusan', 'prodi'));
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -58,7 +73,7 @@ class Admin extends Controller
             'nohp' =>['required', 'string', 'max:255'],
             'alamat' =>['required', 'string', 'max:255'],
             'jeniskelamin' =>['required', 'string', 'max:255'],
-            'tgllahir' =>['required', 'string', 'max:255'],
+            'tgllahir' =>['required', 'date', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
@@ -92,6 +107,119 @@ class Admin extends Controller
         $mahasiswa->save();
 
         return redirect(route('student'));
+        // dd('masok');
+        // if($mahasiswa){
+        //     echo('berhasil');
+        //     dd('berhasil');
+
+        // }else{
+        //     echo('gagal');
+        //     dd('gagal');
+        // }
+
+
+    }
+
+    public function storeketua(Request $request)
+    {
+        $request->validate([
+            'nama' => ['required', 'string', 'max:255'],
+            'nidn' =>['required', 'string', 'max:15'],
+            'prodi_id' =>['required', 'string', 'max:255'],
+            'jurusan_id' =>['required', 'string', 'max:255'],
+            'nohp' =>['required', 'string', 'max:255'],
+            'alamat' =>['required', 'string', 'max:255'],
+            'jeniskelamin' =>['required', 'string', 'max:255'],
+            'tgllahir' =>['required', 'date', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
+        // dd($request);
+
+        User::create([
+            'email' => $request->email,
+            'isAdmin' => 2,
+            'password' => Hash::make($request->password),
+        ]);
+        $user = User::orderBy('created_at','desc')->get();
+        // dd(User::orderBy('created_at','desc')->get());
+        // dd($user[0]->id);
+        // $pelanggaran = new Pelanggamahasiswaran;
+        // $pelanggaran->NIM = $request->NIM;
+        // $pelanggaran->bukti = $request->bukti;
+
+        // $pelanggaran->save();
+        $mahasiswa = new ketuajurusan;
+        $mahasiswa->nama = $request->nama;
+        $mahasiswa->id_user = $user[0]->id;
+        $mahasiswa->nidn = $request->nidn;
+        $mahasiswa->prodi_id = $request->prodi_id;
+        $mahasiswa->jurusan_id = $request->jurusan_id;
+        $mahasiswa->nohp = $request->nohp;
+        $mahasiswa->alamat = $request->alamat;
+        $mahasiswa->jeniskelamin = $request->jeniskelamin;
+        $mahasiswa->tgllahir = $request->tgllahir;
+        $mahasiswa->email = $request->email;
+
+        $mahasiswa->save();
+
+        return redirect(route('dataketua'));
+        // dd('masok');
+        // if($mahasiswa){
+        //     echo('berhasil');
+        //     dd('berhasil');
+
+        // }else{
+        //     echo('gagal');
+        //     dd('gagal');
+        // }
+
+
+    }
+    public function storeketuap(Request $request)
+    {
+        $request->validate([
+            'nama' => ['required', 'string', 'max:255'],
+            'nidn' =>['required', 'string', 'max:15'],
+            'prodi_id' =>['required', 'string', 'max:255'],
+            'jurusan_id' =>['required', 'string', 'max:255'],
+            'nohp' =>['required', 'string', 'max:255'],
+            'alamat' =>['required', 'string', 'max:255'],
+            'jeniskelamin' =>['required', 'string', 'max:255'],
+            'tgllahir' =>['required', 'date', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
+        // dd($request);
+
+        User::create([
+            'email' => $request->email,
+            'isAdmin' => 3,
+            'password' => Hash::make($request->password),
+        ]);
+        $user = User::orderBy('created_at','desc')->get();
+        // dd(User::orderBy('created_at','desc')->get());
+        // dd($user[0]->id);
+        // $pelanggaran = new Pelanggamahasiswaran;
+        // $pelanggaran->NIM = $request->NIM;
+        // $pelanggaran->bukti = $request->bukti;
+
+        // $pelanggaran->save();
+        $mahasiswa = new Ketuaprodi;
+        $mahasiswa->nama = $request->nama;
+        $mahasiswa->id_user = $user[0]->id;
+        $mahasiswa->nidn = $request->nidn;
+        $mahasiswa->prodi_id = $request->prodi_id;
+        $mahasiswa->jurusan_id = $request->jurusan_id;
+        $mahasiswa->nohp = $request->nohp;
+        $mahasiswa->alamat = $request->alamat;
+        $mahasiswa->jeniskelamin = $request->jeniskelamin;
+        $mahasiswa->tgllahir = $request->tgllahir;
+        $mahasiswa->email = $request->email;
+
+        $mahasiswa->save();
+
+        return redirect(route('dataketua'));
         // dd('masok');
         // if($mahasiswa){
         //     echo('berhasil');
@@ -169,6 +297,11 @@ class Admin extends Controller
         $pegawai = mahasiswa::all();
         $data = mahasiswa::all();
     	return view('admin.tabledata', compact('data','pegawai'));
+    }
+    public function dataketua(){
+        $pegawai = ketuajurusan::all();
+        $data = Ketuaprodi::all();
+    	return view('admin.dataketua', compact('data','pegawai'));
     }
 
     public function pengujian(){

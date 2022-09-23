@@ -6,6 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
+<style>
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button 
+    {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+        
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+</style>
 
 <body>
     <section id="header">
@@ -21,7 +35,7 @@
                 <div class="border-b-2 border-black mx-2 my-4">
                     <h2 class="font-serif font-bold text-2xl">Data Diri</h2>
                 </div>
-                <form action="{{ route('edits', $data->id) }}" method="POST">
+                <form action="{{ route('editk', $data->id) }}" method="POST">
                     @csrf
                     <div class="flex flex-wrap">
                         <div class="w-full justify-center px-20 py-10 relative lg:w-1/2">
@@ -34,7 +48,7 @@
                                 </div>
                                 <div class="grid grid-cols-3 gap-2">
                                     <h2 class="col-start-1 self-center">NIDN</h2>
-                                    <input type="text" name="nim" id="nim" value='{{ $data->nim }}'
+                                    <input type="text" name="nidn" id="nidn" value='{{ $data->nidn}}'
                                         class="col-start-2 col-span-2 py-2 bg-gray-200 border-0 rounded-md">
                                 </div>
                                 <div class="grid grid-cols-3 gap-2">

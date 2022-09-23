@@ -19,8 +19,8 @@
     </section>
 
     <div class="container flex mx-auto my-4 w-full">
-        <a href="{{ route('add') }}" class="border rounded-3xl py-1 px-4 hover:text-white text-black font-serif"
-            style="background-color: rgba(213, 221, 209, 1)"">
+        <a href="{{ route('adddata') }}" class="border rounded-3xl py-1 px-4 hover:text-white text-black font-serif"
+            style="background-color: rgba(213, 221, 209, 1)">
             + Tambah Data
         </a>
     </div>
@@ -85,12 +85,12 @@
                                             </div>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <a href="{{ route('data', $dt->id) }}"
+                                            <a href="{{ route('editkajur', $dt->id) }}"
                                                 class="inline-block text-white py-1 px-2 rounded-lg text-center border"
                                                 style="background-color: rgba(64, 94, 79, 1)">
                                                 edit
                                             </a>
-                                            <a href="{{ route('delete', $dt->id) }}"
+                                            <a href="{{ route('deletekajur', $dt->id) }}"
                                                 class="inline-block text-white py-1 px-2 rounded-lg text-center border"
                                                 style="background-color: rgba(64, 94, 79, 1)">
                                                 Hapus

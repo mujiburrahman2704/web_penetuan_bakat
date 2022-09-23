@@ -27,7 +27,10 @@
                         <a href="{{ route('pengujian') }}">Pengujian</a>
                     </li>
                     <li class="nav-item py-2 px-8 hover:text-black" style="background-color: rgba(64, 94, 79, 1)">
-                        <a href="{{ url('admin/datastudent') }}">Data Mahasiswa</a>
+                        <a href="{{ route('datastudent') }}">Data Mahasiswa</a>
+                    </li>
+                    <li class="nav-item py-2 px-8 hover:text-black" style="background-color: rgba(64, 94, 79, 1)">
+                        <a href="{{ route('dataketua') }}">Data Kaprodi/Kajur</a>
                     </li>
                     <li class="nav-item py-2 px-6 hover:text-black" style="background-color: rgba(64, 94, 79, 1)">
                         <a href="{{ route('historis') }}">History</a>

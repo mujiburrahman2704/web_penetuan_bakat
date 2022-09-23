@@ -8,9 +8,11 @@ use App\Models\ketuajurusan;
 use App\Models\mahasiswa;
 use App\Models\Prodi;
 use App\Models\User;
+use Illuminate\Validation\Rules;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class Kajur extends Controller
 {
@@ -76,7 +78,9 @@ class Kajur extends Controller
      */
     public function create()
     {
-        //
+        $prodi = Prodi::all();
+        $jurusan = Jurusan::all();
+        return view('kajur.adddata', compact('jurusan', 'prodi'));
     }
 
     /**
@@ -87,7 +91,37 @@ class Kajur extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama' => ['required', 'string', 'max:255'],
+            'nim' =>['required', 'string', 'max:15'],
+            'prodi_id' =>['required', 'string', 'max:255'],
+            'jurusan_id' =>['required', 'string', 'max:255'],
+            'nohp' =>['required', 'string', 'max:255'],
+            'alamat' =>['required', 'string', 'max:255'],
+            'jeniskelamin' =>['required', 'string', 'max:255'],
+            'tgllahir' =>['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
+
+        User::create([
+            'email' => $request->email,
+            'isAdmin' => 0,
+            'password' => Hash::make($request->password),
+        ]);
+        $user = User::orderBy('created_at','desc')->get();
+        $mahasiswa = new Mahasiswa;
+        $mahasiswa->nama = $request->nama;
+        $mahasiswa->id_user = $user[0]->id;
+        $mahasiswa->nim = $request->nim;
+        $mahasiswa->prodi_id = $request->prodi_id;
+        $mahasiswa->jurusan_id = $request->jurusan_id;
+        $mahasiswa->nohp = $request->nohp;
+        $mahasiswa->alamat = $request->alamat;
+        $mahasiswa->jeniskelamin = $request->jeniskelamin;
+        $mahasiswa->tgllahir = $request->tgllahir;
+        $mahasiswa->email = $request->email;
+        $mahasiswa->save();
     }
 
     /**
@@ -109,7 +143,12 @@ class Kajur extends Controller
      */
     public function edit($id)
     {
-        //
+        $login = Auth::user()->email;
+        $user = ketuajurusan::where('email', $login)->first();
+        $jurusan = Jurusan::all();
+        $prodi = Prodi::all();
+        $data = mahasiswa::where('id', $id)->first();
+        return view('kajur.editdata', compact('jurusan', 'prodi', 'data', 'user'));
     }
 
     /**
@@ -121,7 +160,53 @@ class Kajur extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'nama' => ['required', 'string', 'max:255'],
+            'nim' =>['required', 'string', 'max:15'],
+            'prodi_id' =>['required', 'string', 'max:255'],
+            'jurusan_id' =>['required', 'string', 'max:255'],
+            'nohp' =>['required', 'string', 'max:255'],
+            'alamat' =>['required', 'string', 'max:255'],
+            'jeniskelamin' =>['required', 'string', 'max:255'],
+            'tgllahir' =>['required', 'string', 'max:255'],
+        ]);
+        mahasiswa::where('id', $id)->update([
+            'nama' => $request->nama,
+            'nim' => $request->nim,
+            'prodi_id' => $request->jurusan_id,
+            'jurusan_id' => $request->jurusan_id,
+            'nohp' => $request->nohp,
+            'alamat' => $request->alamat,
+            'jeniskelamin' => $request->jeniskelamin,
+            'tgllahir' => $request->tgllahir,
+            'email' => $request->email,
+        ]);
+        return redirect(route('kajurmhs'));
+    }
+    public function updates(Request $request, $id)
+    {
+        $request->validate([
+            'nama' => ['required', 'string', 'max:255'],
+            'nidn' =>['required', 'string', 'max:15'],
+            'prodi_id' =>['required', 'string', 'max:255'],
+            'jurusan_id' =>['required', 'string', 'max:255'],
+            'nohp' =>['required', 'string', 'max:255'],
+            'alamat' =>['required', 'string', 'max:255'],
+            'jeniskelamin' =>['required', 'string', 'max:255'],
+            'tgllahir' =>['required', 'string', 'max:255'],
+        ]);
+        ketuajurusan::where('id', $id)->update([
+            'nama' => $request->nama,
+            'nidn' => $request->nidn,
+            'prodi_id' => $request->jurusan_id,
+            'jurusan_id' => $request->jurusan_id,
+            'nohp' => $request->nohp,
+            'alamat' => $request->alamat,
+            'jeniskelamin' => $request->jeniskelamin,
+            'tgllahir' => $request->tgllahir,
+            'email' => $request->email,
+        ]);
+        return redirect(route('kajurmhs'));
     }
 
     /**

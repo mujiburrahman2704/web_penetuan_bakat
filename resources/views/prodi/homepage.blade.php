@@ -13,7 +13,7 @@
 
 <body class="overflow-auto">
     <section id="header">
-        @include('partials.headerkajur')
+        @include('partials.headerprodi')
     </section>
     @php
         function bulan_indo($inp)
